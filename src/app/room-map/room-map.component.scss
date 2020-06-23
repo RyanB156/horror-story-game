@@ -1,0 +1,33 @@
+
+.north {
+  transform: rotate(0deg);
+}
+
+.east {
+  transform: rotate(90deg);
+}
+
+.south {
+  transform: rotate(180deg);
+}
+
+.west {
+  transform: rotate(270deg);
+}
+
+#roomTag {
+  font-size: 0.5em;
+}
+
+.room-label {
+  position: relative;
+  top: -54px;
+  z-index: 2;
+}
+
+.floor-label {
+  position: relative;
+  top: -36px;
+  left: 5px;
+  z-index: 2;
+}

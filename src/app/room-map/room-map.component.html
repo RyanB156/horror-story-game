@@ -1,0 +1,21 @@
+<div>
+  <table>
+    <tr *ngFor="let row of rows; let i = index">
+      <td *ngFor="let col of cols; let j = index" style="width:100px;height:100px;">
+        <div class="btn-light" style="width:100px;height:100px">
+          <div *ngIf="map[i][j] !== null && map[i][j] !== undefined">
+            <img style="z-index: 1;" [ngClass]="map[i][j].direction===0 ? 'north' : (map[i][j].direction===1 ? 'east' : (map[i][j].direction===2 ? 'south' : 'west'))"
+            (click)="map[i][j].rotate($event)" style="width:100px;height:100px;" src="{{ map[i][j].path }}">
+            <div class="room-label text-center" style="z-index: 2;" id="roomTag">
+              {{ map[i][j].direction }}
+              {{ map[i][j].name }}
+            </div>
+            <div class="floor-label" >
+              {{ getFloor(i, j) }}
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
