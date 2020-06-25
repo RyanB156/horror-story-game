@@ -1,23 +1,79 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { RandomService } from '../random/random.service';
 
+import { Room } from '../domain/Room';
+import { Player } from '../domain/Player';
+import { Floor, CardType, Orientation } from '../domain/EnumTypes';
+
+/* TODO:
+  Set valid doorways for each room. These will need to be set when the room is fixed.
+    Allow the player to move from one room to another.
+
+  Allow player to move to different rooms.
+    0 movement cost to move to upper landing from Grand Staircase
+
+  Rooms component
+    Players
+    Floor level
+    Card type
+    Items
+    Open doors
+    Picture
+
+  Players component
+    speed, might, sanity, and knowledge values
+    items
+    cards
+    image
+
+  Tokens
+
+  Manual book component
+
+  Haunt book component
+
+  Cards
+    Character
+      speed, might, sanity, and knowledge markers
+
+    Omen
+    Item
+    Event
+
+  Components
+
+
+*/
 
 @Component({
   selector: 'app-room-map',
   templateUrl: './room-map.component.html',
   styleUrls: ['./room-map.component.scss']
 })
-export class RoomMapComponent implements OnInit {
+export class RoomMapComponent implements OnInit, AfterViewInit {
+  @ViewChild("mapTable") mapTable: ElementRef;
 
-  rowCount: number = 5;
-  colCount: number = 5;
+  rowCount: number = 10;
+  colCount: number = 10;
   rows: number[] = new Array(this.rowCount);
   cols: number[] = new Array(this.colCount);
 
-  map: any;
+  players: Player[] = [];
+  currentPlayer: number = 0;
+
+  diceToRoll: number = 2;
+  rollNumber: number = 0;
+  randomService: RandomService;
+
+  map: Room[][];
 
   rooms: Room[];
 
-  constructor() { 
+  constructor(randomService: RandomService) { 
+
+    this.randomService = randomService;
+    this.players.push(Player.heatherGranville(1, 2));
+
     this.map = new Array(this.rowCount);
     for (let i = 0; i < this.rowCount; i++) {
       this.map[i] = new Array(this.colCount);
@@ -74,55 +130,69 @@ export class RoomMapComponent implements OnInit {
       new Room("Wine Cellar", Floor.Basement, CardType.Item, Room.oppositeDoors)
     ]
 
-    this.map[0][0] = this.getRoomByName("Basement Landing");
+    this.map[3][3] = this.getRoomByName("Basement Landing");
 
-    this.map[1][1] = this.getRoomByName("Library");
+    this.map[4][4] = this.getRoomByName("Library");
 
-    this.map[2][1] = this.getRoomByName("Entrance Hall");
-    this.map[2][2] = this.getRoomByName("Grand Staircase");
-    this.map[2][3] = this.getRoomByName("Upper Landing");
+    this.map[4][5] = this.getRoomByName("Entrance Hall");
+    this.map[4][5].addPlayer(this.players[0]);
 
+    this.map[5][5] = this.getRoomByName("Foyer");
+    this.map[6][5] = this.getRoomByName("Grand Staircase");
+    this.map[7][4] = this.getRoomByName("Upper Landing");
+
+  }
+
+  ngOnInit(): void {
+    
+  }
+
+  ngAfterViewInit() : void {
+    this.mapTable.nativeElement.scrollTop = this.mapTable.nativeElement.scrollHeight / 4;
+    this.mapTable.nativeElement.scrollLeft = this.mapTable.nativeElement.scrollHeight / 4;
   }
 
   getRoomByName(name: string) : Room {
     return this.rooms.find(r => r.name === name);
   }
 
+  /**Get the room from the room map with the specified x and y coordinates. */
   getRoom(i: number, j: number) {
-    console.log(`Retrieving room (${i}, ${j})`)
     return this.map[i][j];
   }
 
+  /**Get text representing the floor that the room is on. */
   getFloor(i: number, j: number) {
     let room: Room = this.getRoom(i, j);
     let text = "";
 
-    console.log("room.floor: " + room.floor);
-    console.log("room.floor & Floor.Start: " + (room.floor & Floor.Start));
-    console.log("room.floor & Floor.Basement: " + (room.floor & Floor.Basement));
-    console.log("room.floor & Floor.Ground: " + (room.floor & Floor.Ground));
-    console.log("room.floor & Floor.Upper: " + (room.floor & Floor.Upper));        
-
     if (room !== null) {
       if (room.floor === Floor.Start)
         text += "S";
-      else if ((room.floor & Floor.Basement) > 0)
+      if ((room.floor & Floor.Basement) > 0)
         text += "B";
-      else if ((room.floor & Floor.Ground) > 0)
+      if ((room.floor & Floor.Ground) > 0)
         text += "G";
-      else if ((room.floor & Floor.Upper) > 0)
+      if ((room.floor & Floor.Upper) > 0)
         text += "U";
     }
     return text;
   }
 
-  ngOnInit(): void {
+  test() {
+
   }
 
-}
+  roll() {
+    this.randomService.getRandom(0, 2, this.diceToRoll).subscribe((numbers) => {
+      let arr = numbers.split("	").filter(x => x !== "");
+      this.rollNumber = arr.map(x => parseInt(x)).reduce((x, y) => x + y);
+    });
+  }
 
-class Player {
-  location: Pair;
+  getCard(i: number, j: number) {
+
+  }
 
 }
 
@@ -133,53 +203,3 @@ class Card {
 
 }
 
-class Pair {
-  x: number;
-  y: number;
-
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-}
-
-class Room {
-  name: string = "";
-  direction: Orientation = Orientation.North;
-  path: string = "";
-  floor: Floor;
-  card: CardType;
-
-  constructor(name: string, floor: Floor, card: CardType, roomType: string, direction: Orientation = Orientation.North) {
-    this.name = name;
-    this.path = Room.getPath(roomType);
-    this.floor = floor;
-    this.card = card;
-    this.direction = direction;
-  }
-
-  setDirection(direction: Orientation) {
-    this.direction = direction;
-  }
-
-  rotate(evt) : void {
-    this.direction++;
-    this.direction %= 4;
-    console.log(evt);
-  }
-
-  static oneDoor: string = "roomOneDoor";
-  static cornerDoors: string = "roomLDoors";
-  static oppositeDoors: string = "roomOppositeDoors";
-  static threeDoors: string = "roomThreeDoors";
-  static fourDoors: string = "roomFourDoors";
-
-  static getPath(roomType: string) : string {
-    return "../assets/" + roomType + ".png";
-  }
-
-}
-
-enum Orientation { North, East, South, West }
-enum Floor { Start = 0, Basement = 1, Ground = 2, Upper = 4 }
-enum CardType { None, Event, Omen, Item }
