@@ -1,9 +1,11 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
 import { RandomService } from '../random/random.service';
+import { CharacterComponent } from '../character/character.component';
 
 import { Room } from '../domain/Room';
 import { Player } from '../domain/Player';
 import { Floor, CardType, Orientation } from '../domain/EnumTypes';
+import { Pair } from '../domain/Pair';
 
 /* TODO:
   Set valid doorways for each room. These will need to be set when the room is fixed.
@@ -50,8 +52,9 @@ import { Floor, CardType, Orientation } from '../domain/EnumTypes';
   templateUrl: './room-map.component.html',
   styleUrls: ['./room-map.component.scss']
 })
-export class RoomMapComponent implements OnInit, AfterViewInit {
+export class RoomMapComponent implements OnInit, AfterViewInit, AfterContentInit {
   @ViewChild("mapTable") mapTable: ElementRef;
+  @ContentChildren(CharacterComponent) characters: QueryList<CharacterComponent>;
 
   rowCount: number = 10;
   colCount: number = 10;
@@ -73,6 +76,7 @@ export class RoomMapComponent implements OnInit, AfterViewInit {
 
     this.randomService = randomService;
     this.players.push(Player.heatherGranville(1, 2));
+    this.players.push(Player.oxBellows(2, 2));
 
     this.map = new Array(this.rowCount);
     for (let i = 0; i < this.rowCount; i++) {
@@ -135,9 +139,11 @@ export class RoomMapComponent implements OnInit, AfterViewInit {
     this.map[4][4] = this.getRoomByName("Library");
 
     this.map[4][5] = this.getRoomByName("Entrance Hall");
-    this.map[4][5].addPlayer(this.players[0]);
+    this.setPlayerPosition(this.players[0], 4, 5);
 
     this.map[5][5] = this.getRoomByName("Foyer");
+    this.setPlayerPosition(this.players[1], 5, 5);
+
     this.map[6][5] = this.getRoomByName("Grand Staircase");
     this.map[7][4] = this.getRoomByName("Upper Landing");
 
@@ -150,6 +156,26 @@ export class RoomMapComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() : void {
     this.mapTable.nativeElement.scrollTop = this.mapTable.nativeElement.scrollHeight / 4;
     this.mapTable.nativeElement.scrollLeft = this.mapTable.nativeElement.scrollHeight / 4;
+  }
+
+  ngAfterContentInit() : void {
+    
+  }
+
+  statRoll(evt: [number, number]) : void {
+    console.log("Received value");
+        this.diceToRoll = evt[0];
+        this.roll();
+  }
+
+  setPlayerPosition(player: Player, x: number, y: number) {
+    let room = this.map[x][y];
+    if (room !== null) {
+      player.location = new Pair(x, y);
+      room.players.push(player);
+    } else {
+      alert(`Cannot set player at position (${x}, ${y})`);
+    }
   }
 
   getRoomByName(name: string) : Room {

@@ -10,9 +10,8 @@ export class CharacterComponent implements OnInit {
   @Input() player: Player;
   @Input() index: number;
   /**Emits the number of dice to roll and the index of the player. */
-  @Output() physicalRoll: EventEmitter<[number, number]>;
-  /**Emits the number of dice to roll and the index of the player. */
-  @Output() mentalRoll: EventEmitter<[number, number]>;
+  @Output() statRoll: EventEmitter<[number, number]> = new EventEmitter<[number, number]>();
+  
 
   constructor() { 
     
@@ -38,11 +37,13 @@ export class CharacterComponent implements OnInit {
   }
 
   onPhysicalRoll() {
-    this.physicalRoll.emit([Math.max(this.player.speed, this.player.might), this.index]);
+    console.log("Emitting Physical Roll");
+    this.statRoll.emit([Math.max(this.player.speedLevels[this.player.speed], this.player.mightLevels[this.player.might]), this.index]);
   }
 
   onMentalRoll() {
-    this.physicalRoll.emit([Math.max(this.player.sanity, this.player.knowledge), this.index]);
+    console.log("Emitting Mental Roll");
+    this.statRoll.emit([Math.max(this.player.sanityLevels[this.player.sanity], this.player.knowledgeLevels[this.player.knowledge]), this.index]);
   }
 
 }

@@ -21,14 +21,13 @@ export class Player {
   sanity: number;
   knowledge: number;
 
-  private constructor(x: number, y: number, name: string, color: string) {
-    this.location = new Pair(x, y);
+  private constructor(name: string, color: string) {
     this.name = name;
     this.color = color;
   }
 
   public static madameZostra(x: number, y: number) : Player {
-    let p = new Player(x, y, "Madame Zostra", "blue");
+    let p = new Player("Madame Zostra", "blue");
     p.speed = 3;
     p.speedLevels = [0, 2, 3, 3, 5, 5, 6, 6, 7];
     p.might = 4;
@@ -41,7 +40,7 @@ export class Player {
   }
 
   public static vivianLopez(x: number, y: number) : Player {
-    let p = new Player(x, y, "Vivian Lopez", "blue");
+    let p = new Player("Vivian Lopez", "blue");
     p.speed = 4;
     p.speedLevels = [0, 3, 4, 4, 4, 4, 6, 7, 8];
     p.might = 3;
@@ -54,7 +53,7 @@ export class Player {
   }
 
   public static heatherGranville(x: number, y: number) : Player {
-    let p = new Player(x, y, "Heather Granville", "pink");
+    let p = new Player("Heather Granville", "pink");
     p.speed = 3;
     p.speedLevels = [0, 3, 3, 4, 5, 6, 6, 7, 8];
     p.might = 3;
@@ -67,7 +66,7 @@ export class Player {
   }
 
   public static jennyLeClerc(x: number, y: number) : Player {
-    let p = new Player(x, y, "Jenny LeClerc", "pink");
+    let p = new Player("Jenny LeClerc", "pink");
     p.speed = 4;
     p.speedLevels = [0, 2, 3, 4, 4, 4, 5, 6, 8];
     p.might = 3;
@@ -80,7 +79,7 @@ export class Player {
   }
 
   public static zoeIngstrom(x: number, y: number) : Player {
-    let p = new Player(x, y, "Zoe Ingstrom", "orange");
+    let p = new Player("Zoe Ingstrom", "orange");
     p.speed = 4;
     p.speedLevels = [0, 4, 4, 4, 4, 5, 6, 8, 8];
     p.might = 3;
@@ -93,7 +92,7 @@ export class Player {
   }
 
   public static missyDubourde(x: number, y: number) : Player {
-    let p = new Player(x, y, "Missy Dubourde", "orange");
+    let p = new Player("Missy Dubourde", "orange");
     p.speed = 3;
     p.speedLevels = [0, 3, 4, 5, 6, 6, 6, 7, 7];
     p.might = 4;
@@ -106,7 +105,7 @@ export class Player {
   }
 
   public static professorLongfellow(x: number, y: number) : Player {
-    let p = new Player(x, y, "Professor Longfellow", "gray");
+    let p = new Player("Professor Longfellow", "gray");
     p.speed = 4;
     p.speedLevels = [0, 2, 2, 4, 4, 5, 5, 6, 6];
     p.might = 3;
@@ -119,7 +118,7 @@ export class Player {
   }
 
   public static fatherRhinehardt(x: number, y: number) : Player {
-    let p = new Player(x, y, "Father Rhinehardt", "gray");
+    let p = new Player("Father Rhinehardt", "gray");
     p.speed = 3;
     p.speedLevels = [0, 2, 3, 3, 4, 5, 6, 7, 7];
     p.might = 3;
@@ -132,7 +131,7 @@ export class Player {
   }
 
   public static oxBellows(x: number, y: number) : Player {
-    let p = new Player(x, y, "Ox Bellows", "red");
+    let p = new Player("Ox Bellows", "red");
     p.speed = 5;
     p.speedLevels = [0, 2, 2, 2, 3, 4, 5, 5, 6];
     p.might = 3;
@@ -145,7 +144,7 @@ export class Player {
   }
 
   public static darrinWilliams(x: number, y: number) : Player {
-    let p = new Player(x, y, "Darrin Williams", "red");
+    let p = new Player("Darrin Williams", "red");
     p.speed = 5;
     p.speedLevels = [0, 4, 4, 4, 5, 6, 7, 7, 8];
     p.might = 3;
@@ -158,7 +157,7 @@ export class Player {
   }
 
   public static brandonJaspers(x: number, y: number) : Player {
-    let p = new Player(x, y, "Brandon Jaspers", "green");
+    let p = new Player("Brandon Jaspers", "green");
     p.speed = 3;
     p.speedLevels = [0, 3, 4, 4, 4, 5, 6, 7, 8];
     p.might = 4;
@@ -171,7 +170,7 @@ export class Player {
   }
 
   public static peterAkimoto(x: number, y: number) : Player {
-    let p = new Player(x, y, "Peter Akimoto", "green");
+    let p = new Player("Peter Akimoto", "green");
     p.speed = 4;
     p.speedLevels = [0, 3, 3, 3, 4, 6, 6, 7, 7];
     p.might = 3;

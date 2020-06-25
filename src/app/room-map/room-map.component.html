@@ -16,7 +16,7 @@
               <div class="floor-label col-4" (click)="map[i][j].rotate($event)">
                 {{ getFloor(i, j) }}
               </div>
-              <div class="player-token col-4" *ngFor="let player of map[i][j].players; let p = index" style="color:{{ map[i][j].players[p].color }};"><b>X</b></div>
+              <div class="player-token col-4" *ngFor="let player of map[i][j].players; let p = index" [ngStyle]="{'color':map[i][j].players[p].color}"><b>X</b></div>
             </div>
             
           </div>
@@ -38,6 +38,11 @@
     </div>
     <label for="currentPlayer" class="mr-1">Current Player:</label>
     <input id="currentPlayer" type="text" disabled value='{{ currentPlayer }}'>
+
+    <div *ngFor="let player of players; let i = index;">
+      <app-character [player]="player" [index]="i" (statRoll)="statRoll($event)"></app-character>
+    </div>
+
     <div>
       <button class="btn-primary" (click)="test()">Test</button>
     </div>
