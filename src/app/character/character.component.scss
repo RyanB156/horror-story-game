@@ -1,0 +1,26 @@
+
+.character-box {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  border: 2px solid;
+  border-radius: 8px;
+  padding: 4px;
+  margin: 2px;
+}
+
+.player-name {
+  font-size: large;
+  font-weight: lighter;
+  text-decoration: underline;
+}
+
+.stat-label {
+  font-weight: bold;
+}
+
+.stat {
+  padding: 0px 2px;
+}
+
+.selected {
+  border: 1px solid red;
+}

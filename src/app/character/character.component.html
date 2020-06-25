@@ -1,1 +1,45 @@
-<p>character works!</p>
+
+<div class="character-box" [ngStyle]="{'border-color':player.color}">
+  <div class="player-name">{{ player.name }}</div>
+
+  <div class="row">
+    <div class="col">
+      <span class="stat-label">Speed</span>
+      <div>
+        <span class="stat" *ngFor="speed of player.speedLevels; let i = index" [ngClass]="isSpeedSelected(i)">{{ player.speedLevels[i] }}</span>
+      </div>
+    
+      <span class="stat-label">Might</span>
+      <div>
+        <span class="stat" *ngFor="might of player.mightLevels; let i = index" [ngClass]="isMightSelected(i)">{{ player.mightLevels[i] }}</span>
+      </div>
+    </div>
+    <div class="col">
+      <span class="stat-label">Sanity</span>
+      <div>
+        <span class="stat" *ngFor="sanity of player.sanityLevels; let i = index" [ngClass]="isSanitySelected(i)">{{ player.sanityLevels[i] }}</span>
+      </div>
+
+      <span class="stat-label">Knowledge</span>
+      <div>
+        <span class="stat" *ngFor="knowledge of player.knowledgeLevels; let i = index" [ngClass]="isKnowledgeSelected(i)">{{ player.knowledgeLevels[i] }}</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!--
+color: string; √
+name: string; √
+
+speedLevels: number[];
+mightLevels: number[];
+sanityLevels: number[];
+knowledgeLevels: number[];
+
+speed: number;
+might: number;
+sanity: number;
+knowledge: number;
+-->
