@@ -1,50 +1,41 @@
-<div class="row">
-  <table class="col" #mapTable>
-    <tr *ngFor="let row of rows; let j = index">
-      <td *ngFor="let col of cols; let i = index" style="width:100px;height:100px;">
-        
-        <div class="btn-light" style="width:100px;height:100px;position:relative">
-          <div *ngIf="map[i][j] !== null && map[i][j] !== undefined">
-            <img style="z-index: 1;" [ngClass]="map[i][j].direction===0 ? 'north' : (map[i][j].direction===1 ? 'east' : (map[i][j].direction===2 ? 'south' : 'west'))"
-            (click)="map[i][j].rotate($event)" style="width:100px;height:100px;" src="{{ map[i][j].path }}">
-            <div (click)="map[i][j].rotate($event)" class="room-label" style="z-index: 2;">
-              {{ map[i][j].direction }}
-              {{ map[i][j].name }}
-            </div>
-            
-            <div class="row room-overlay">              
-              <div class="floor-label col-4" (click)="map[i][j].rotate($event)">
-                {{ getFloor(i, j) }}
-              </div>
-              <div class="player-token col-4" *ngFor="let player of map[i][j].players; let p = index" [ngStyle]="{'color':map[i][j].players[p].color}"><b>X</b></div>
-            </div>
-            
-          </div>
-        </div>
-      </td>
-    </tr>
-  </table>
-  <div class="col">
-    <div class="row text-center">
-      <div class="col">
-        <label for="diceToRoll" class="w-100">How many dice?</label>
-        <input id="diceToRoll" type="number" [(ngModel)]="diceToRoll">
-        <button class="btn-primary rounded" (click)="roll()">Roll</button>
-      </div>
-      <div class="col">
-        <label for="rollNumber">Result:</label>
-        <p id="rollNumber">{{ rollNumber }}</p>
-      </div>
+
+<div class="row justify-content-center">
+  <div class="col-sm-12 col-md-6">
+    <div class="row">
+      <app-floor *ngIf="activeMap === 'b'" [rows]="rows" [cols]="cols" [map]="basementMap" 
+      [reachableRooms]="reachableRooms"></app-floor>
+
+      <app-floor *ngIf="activeMap === 'g'" [rows]="rows" [cols]="cols" [map]="groundMap" 
+      [reachableRooms]="reachableRooms"></app-floor>
+
+      <app-floor *ngIf="activeMap === 'u'" [rows]="rows" [cols]="cols" [map]="upperMap" 
+      [reachableRooms]="reachableRooms"></app-floor>
     </div>
+    <button class="btn-light nav-item rounded" [ngClass]="activeMap === 'b' ? 'active' : ''" (click)="seeBasement()">Basement</button>
+    <button class="btn-light nav-item rounded" [ngClass]="activeMap === 'g' ? 'active' : ''" autofocus (click)="seeGround()">Ground</button>
+    <button class="btn-light nav-item rounded" [ngClass]="activeMap === 'u' ? 'active' : ''" (click)="seeUpper()">Upper</button>
+  </div>
+  <div class="col-lg-12 col-xl-6">
+    <label for="diceToRoll" class="w-100">How many dice?</label>
+    <input id="diceToRoll" type="number" [(ngModel)]="diceToRoll">
+    <button class="btn-primary rounded" (click)="roll()">Roll</button>
+  
+  
+    <label for="rollNumber">Result:</label>
+    <p id="rollNumber">{{ rollNumber }}</p>
+      
     <label for="currentPlayer" class="mr-1">Current Player:</label>
     <input id="currentPlayer" type="text" disabled value='{{ currentPlayer }}'>
+    <!--End Status-->
 
+    <!--Players-->
     <div *ngFor="let player of players; let i = index;">
-      <app-character [player]="player" [index]="i" (statRoll)="statRoll($event)"></app-character>
+      <app-character [player]="player" [index]="i" [active]="i === currentPlayer" (statRoll)="statRoll($event)" (finished)="nextPlayer()"></app-character>
     </div>
+    <!--End Players-->
 
-    <div>
-      <button class="btn-primary" (click)="test()">Test</button>
-    </div>
+    <button class="btn-primary" (click)="test()">Test</button>
   </div>
 </div>
+    
+  
