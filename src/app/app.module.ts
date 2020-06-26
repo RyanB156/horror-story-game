@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { RoomMapComponent } from './room-map/room-map.component';
 import { HomeComponent } from './home/home.component';
 import { CharacterComponent } from './character/character.component';
+import { FloorComponent } from './floor/floor.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RoomMapComponent,
     HomeComponent,
-    CharacterComponent
+    CharacterComponent,
+    FloorComponent
   ],
   imports: [
     BrowserModule,
