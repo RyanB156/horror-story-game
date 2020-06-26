@@ -48,13 +48,13 @@ td {
   padding: 0px 5px;
   position: absolute;
   top: 0px;
+  z-index: 5;
 }
 
 .tile-coordinates {
   position: absolute;
-  top: 1px;
+  top: 75px;
   left: 70px;
-  z-index: 5;
 }
 
 .reachable {
@@ -63,4 +63,8 @@ td {
 
 .player-token {
   font-size: 1em;
+}
+
+div.btn-light *:hover {
+  cursor: default;
 }

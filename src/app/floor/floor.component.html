@@ -5,23 +5,23 @@
       <div class="btn-light" style="width:100px;height:100px;position:relative">
         <div *ngIf="map[i][j] !== null && map[i][j] !== undefined">
           <img style="z-index: 1;" [ngClass]="map[i][j].getDirectionClassName()"
-          (click)="map[i][j].rotate($event)" style="width:100px;height:100px;" src="{{ map[i][j].path }}">
-          <div (click)="map[i][j].rotate($event)" class="room-label" style="z-index: 2;" [ngClass]="reachableRooms.has(map[i][j]) ? 'reachable' : 'none'">
+          (click)="onRoomClick(i, j);" style="width:100px;height:100px;" src="{{ map[i][j].path }}">
+          <div (click)="onRoomClick(i, j);" class="room-label" style="z-index: 2;" [ngClass]="reachableRooms.has(map[i][j]) ? 'reachable' : 'none'">
             {{ map[i][j].direction }}
             {{ map[i][j].name }}
           </div>
           
           <div class="row room-overlay">              
-            <div class="floor-label col-4" (click)="map[i][j].rotate($event)">
+            <div class="floor-label col-4" (click)="onRoomClick(i, j);">
               {{ map[i][j].getFloor() }}
             </div>
-            <div class="player-token col-4" *ngFor="let player of map[i][j].players; let p = index" [ngStyle]="{'color':map[i][j].players[p].color}"><b>X</b></div>
+            <div class="player-token col-4" *ngFor="let player of playersHere(i, j); let p = index" [ngStyle]="{'color':player.color}"><b>X</b></div>
           </div>
           
         </div>
-      </div>
-      <div class="tile-coordinates">
-        {{ i }}, {{ j }}
+        <div class="tile-coordinates" (click)="onRoomClick(i, j);">
+          {{ i }}, {{ j }}
+        </div>
       </div>
     </td>
   </tr>
