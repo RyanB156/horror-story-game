@@ -1,9 +1,17 @@
 
 <div class="character-box" [ngStyle]="{'border-color':player.color}">
-  <div class="player-name">{{ player.name }}</div>
+  <div class="row">
+    <div class="col">
+      <div class="player-name" [ngClass]="active ? 'active' : 'none'">{{ player.name }}</div>
+    </div>
+    <div class="col">
+      <div class="player-floor">{{ player.getFloorName() }}</div>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col">
+      <!--Physical Stats-->
       <span class="stat-label">Speed</span>
       <div>
         <span class="stat" *ngFor="speed of player.speedLevels; let i = index" [ngClass]="isSpeedSelected(i)">{{ player.speedLevels[i] }}</span>
@@ -13,8 +21,10 @@
       <div>
         <span class="stat" *ngFor="might of player.mightLevels; let i = index" [ngClass]="isMightSelected(i)">{{ player.mightLevels[i] }}</span>
       </div>
+      <!--End Physical Stats-->
     </div>
     <div class="col">
+      <!--Mental Stats-->
       <span class="stat-label">Sanity</span>
       <div>
         <span class="stat" *ngFor="sanity of player.sanityLevels; let i = index" [ngClass]="isSanitySelected(i)">{{ player.sanityLevels[i] }}</span>
@@ -24,16 +34,19 @@
       <div>
         <span class="stat" *ngFor="knowledge of player.knowledgeLevels; let i = index" [ngClass]="isKnowledgeSelected(i)">{{ player.knowledgeLevels[i] }}</span>
       </div>
+      <!--End Mental Stats-->
     </div>
   </div>
   <div class="row">
     <div class="col">
-      <button class="btn-primary" (click)="onPhysicalRoll()">Physica Roll</button>
+      <button class="btn-primary" (click)="onPhysicalRoll()">Physical Roll</button>
     </div>
     <div class="col">
       <button class="btn-primary" (click)="onMentalRoll()">Mental Roll</button>
     </div>
   </div>
+  
+  <button (click)="onFinished()">End Turn</button>
 
 </div>
 
