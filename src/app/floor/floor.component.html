@@ -1,0 +1,28 @@
+<table #mapTable>
+  <tr *ngFor="let row of rows; let j = index">
+    <td *ngFor="let col of cols; let i = index" style="width:100px;height:100px;position: relative;">
+      
+      <div class="btn-light" style="width:100px;height:100px;position:relative">
+        <div *ngIf="map[i][j] !== null && map[i][j] !== undefined">
+          <img style="z-index: 1;" [ngClass]="map[i][j].getDirectionClassName()"
+          (click)="map[i][j].rotate($event)" style="width:100px;height:100px;" src="{{ map[i][j].path }}">
+          <div (click)="map[i][j].rotate($event)" class="room-label" style="z-index: 2;" [ngClass]="reachableRooms.has(map[i][j]) ? 'reachable' : 'none'">
+            {{ map[i][j].direction }}
+            {{ map[i][j].name }}
+          </div>
+          
+          <div class="row room-overlay">              
+            <div class="floor-label col-4" (click)="map[i][j].rotate($event)">
+              {{ map[i][j].getFloor() }}
+            </div>
+            <div class="player-token col-4" *ngFor="let player of map[i][j].players; let p = index" [ngStyle]="{'color':map[i][j].players[p].color}"><b>X</b></div>
+          </div>
+          
+        </div>
+      </div>
+      <div class="tile-coordinates">
+        {{ i }}, {{ j }}
+      </div>
+    </td>
+  </tr>
+</table>

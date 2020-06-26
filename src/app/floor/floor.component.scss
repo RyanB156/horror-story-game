@@ -1,0 +1,66 @@
+
+.north {
+  transform: rotate(0deg);
+}
+
+.east {
+  transform: rotate(90deg);
+}
+
+.south {
+  transform: rotate(180deg);
+}
+
+.west {
+  transform: rotate(270deg);
+}
+
+table {
+  display: inline-block;
+  overflow: auto;
+  width: 530px;
+  height: 530px;
+}
+
+.active {
+  border: solid 2px black;
+}
+
+td {
+  border: solid gray 1px;
+}
+
+.room-label {
+  position: absolute;
+  top: 60px;
+  left: 8px;
+  z-index: 2;
+  font-size: 0.7em;
+  
+}
+
+.floor-label {
+  display: inline;
+  z-index: 2;
+}
+
+.room-overlay {
+  padding: 0px 5px;
+  position: absolute;
+  top: 0px;
+}
+
+.tile-coordinates {
+  position: absolute;
+  top: 1px;
+  left: 70px;
+  z-index: 5;
+}
+
+.reachable {
+  background-color: yellow;
+}
+
+.player-token {
+  font-size: 1em;
+}
