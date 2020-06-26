@@ -53,8 +53,8 @@ import { FloorComponent } from '../floor/floor.component';
   templateUrl: './room-map.component.html',
   styleUrls: ['./room-map.component.scss']
 })
-export class RoomMapComponent implements OnInit, AfterViewInit, AfterContentInit {
-  
+export class RoomMapComponent implements OnInit, AfterViewInit {
+  @ViewChildren(FloorComponent) floors: QueryList<FloorComponent>;
   @ViewChildren(CharacterComponent) characters: QueryList<CharacterComponent>;
 
   rowCount: number = 10;
@@ -63,7 +63,7 @@ export class RoomMapComponent implements OnInit, AfterViewInit, AfterContentInit
   cols: number[] = new Array(this.colCount);
 
   players: Player[] = [];
-  currentPlayer: number = 0;
+  currentPlayer: number = -1;
 
   diceToRoll: number = 2;
   rollNumber: number = 0;
@@ -178,7 +178,7 @@ export class RoomMapComponent implements OnInit, AfterViewInit, AfterContentInit
     this.upperMap[7][4] = this.getRoomByName("Upper Landing");
     //
 
-    console.log("Calling setReachableRooms");
+    this.nextPlayer();
     this.setReachableRooms();
   }
 
@@ -186,12 +186,73 @@ export class RoomMapComponent implements OnInit, AfterViewInit, AfterContentInit
     
   }
 
-  ngAfterViewInit() : void {;
-
+  ngAfterViewInit() : void {
+    this.floors.toArray().forEach(f => {
+      f.roomClick.subscribe(this.onRoomClicked);
+    });
   }
 
-  ngAfterContentInit() : void {
-    
+  /**Move the current player to the selected room. */
+  onRoomClicked = (pos: [number, number]) : void => {
+
+    console.log(`Moving current player to ${pos[0]},${pos[1]}`);
+
+    let clickedRoom = this.getRoom(pos[0], pos[1]);
+
+    // Make sure the clicked room is reachable.
+    if (this.reachableRooms.has(clickedRoom)) {
+      let player = this.players[this.currentPlayer];
+      // Make sure the player can still move
+      if (player.hasMovesRemaining()) {
+        // Make sure the room is one tile away from the player.
+        let currentRoom = this.getRoom(player.location.x, player.location.y);
+        if (this.adjacentTo(currentRoom, player.location.x, player.location.y, clickedRoom, pos[0], pos[1])) {
+          // Set the player's new position, remove one from their stamina, and update the reachable rooms.
+          this.setPlayerPosition(player, pos[0], pos[1], this.activeMapToFloor());
+          player.move();
+          this.setReachableRooms();
+          console.log(player);
+        } else {
+          alert("You must move to rooms one-by-one");
+        }
+      }
+    }
+  }
+
+  adjacentTo(startRoom: Room, x1: number, y1: number, endRoom: Room, x2: number, y2: number) : boolean {
+    console.log(`${x1},${y1} -> ${x2}, ${y2}`);
+    if (Math.abs(x2 - x1) + Math.abs(y2 - y1) === 1) {
+      if (x1 === x2) {
+        console.log("vertical");
+        return ((startRoom.openDoors & Orientation.South) > 0 && (endRoom.openDoors & Orientation.North) > 0) ||
+        (startRoom.openDoors & Orientation.North) > 0 && (endRoom.openDoors & Orientation.South) > 0
+      } else if (y1 === y2) {
+        console.log("horizontal");
+        return ((startRoom.openDoors & Orientation.East) > 0 && (endRoom.openDoors & Orientation.West) > 0) ||
+        (startRoom.openDoors & Orientation.West) > 0 && (endRoom.openDoors & Orientation.East) > 0
+      }
+    }
+  }
+
+  activeMapToFloor() : Floor {
+    switch (this.activeMap) {
+      case "b": return Floor.Basement;
+      case "g": return Floor.Ground;
+      case "u": return Floor.Upper;
+      default: return Floor.Start;
+    }
+  }
+
+  basementPlayers() : Player[] {
+    return this.players.filter(p => p.floor === Floor.Basement);
+  }
+
+  groundPlayers() : Player[] {
+    return this.players.filter(p => p.floor === Floor.Ground);;
+  }
+
+  upperPlayers() : Player[] {
+    return this.players.filter(p => p.floor === Floor.Upper);
   }
 
   seeBasement() : void {
@@ -217,27 +278,27 @@ export class RoomMapComponent implements OnInit, AfterViewInit, AfterContentInit
     this.reachableRooms = new Set();
 
     let player = this.players[this.currentPlayer];
-    let depth = player.speedLevels[player.speed];
+    let depth = player.movesRemaining;
 
     let inner = ((x: number, y: number, depth: number) => {
 
-      console.log(`inner called with (${x}, ${y}, ${depth})`);
+      // console.log(`inner called with (${x}, ${y}, ${depth})`);
 
       let currentRoom = this.getRoom(x, y);
 
-      console.log("Checking:");
-      console.log(currentRoom);
+      // console.log("Checking:");
+      // console.log(currentRoom);
 
       if (depth > 0) {
         // North room.
 
-        console.log("Checking y - 1");
+        // console.log("Checking y - 1");
 
         if (y - 1 >= 0) {
           let northRoom = this.getRoom(x, y - 1);
           if (northRoom !== undefined) {
-            console.log(currentRoom);
-            console.log(northRoom);
+            // console.log(currentRoom);
+            // console.log(northRoom);
 
             // If the player can move North into the next room...
             if ((currentRoom.openDoors & Orientation.North) > 0 && (northRoom.openDoors & Orientation.South) > 0) {
@@ -248,13 +309,13 @@ export class RoomMapComponent implements OnInit, AfterViewInit, AfterContentInit
         }
         // East room.
 
-        console.log("Checking x + 1");
+        // console.log("Checking x + 1");
 
         if (x + 1 < this.colCount) {
           let eastRoom = this.getRoom(x + 1, y);
           if (eastRoom !== undefined) {
-            console.log(currentRoom);
-            console.log(eastRoom);
+            // console.log(currentRoom);
+            // console.log(eastRoom);
 
             // If the player can move East into the next room...
             if ((currentRoom.openDoors & Orientation.East) > 0 && (eastRoom.openDoors & Orientation.West) > 0) {
@@ -265,13 +326,13 @@ export class RoomMapComponent implements OnInit, AfterViewInit, AfterContentInit
         }
         // South room.
 
-        console.log("Checking y + 1");
+        // console.log("Checking y + 1");
 
         if (y + 1 < this.rowCount) {
           let southRoom = this.getRoom(x, y + 1);
           if (southRoom !== undefined) {
-            console.log(currentRoom);
-            console.log(southRoom);
+            // console.log(currentRoom);
+            // console.log(southRoom);
 
             // If the player can move South into the next room...
             if ((currentRoom.openDoors & Orientation.South) > 0 && (southRoom.openDoors & Orientation.North) > 0) {
@@ -282,13 +343,13 @@ export class RoomMapComponent implements OnInit, AfterViewInit, AfterContentInit
         }
         // West room.
 
-        console.log("Checking x - 1");
+        // console.log("Checking x - 1");
 
         if (x - 1 >= 0) {
           let westRoom = this.getRoom(x - 1, y);
           if (westRoom !== undefined) {
-            console.log(currentRoom);
-            console.log(westRoom);
+            // console.log(currentRoom);
+            // console.log(westRoom);
 
             // If the player can move West into the next room...
             if ((currentRoom.openDoors & Orientation.West) > 0 && (westRoom.openDoors & Orientation.East) > 0) {
@@ -302,12 +363,13 @@ export class RoomMapComponent implements OnInit, AfterViewInit, AfterContentInit
 
     inner(player.location.x, player.location.y, depth);
 
-    console.log(this.reachableRooms);
+    // console.log(this.reachableRooms);
   }
 
   nextPlayer() : void {
     this.currentPlayer++;
     this.currentPlayer %= this.players.length;
+    this.players[this.currentPlayer].startMove();
     this.setReachableRooms();
   }
 
@@ -326,7 +388,6 @@ export class RoomMapComponent implements OnInit, AfterViewInit, AfterContentInit
     if (room !== null) {
       player.location = new Pair(x, y);
       player.floor = floor;
-      room.players.push(player);
     } else {
       alert(`Cannot set player at position (${x}, ${y})`);
     }

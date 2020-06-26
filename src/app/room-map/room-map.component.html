@@ -3,13 +3,13 @@
   <div class="col-sm-12 col-md-6">
     <div class="row">
       <app-floor *ngIf="activeMap === 'b'" [rows]="rows" [cols]="cols" [map]="basementMap" 
-      [reachableRooms]="reachableRooms"></app-floor>
+      [players]="basementPlayers()" [reachableRooms]="reachableRooms"></app-floor>
 
       <app-floor *ngIf="activeMap === 'g'" [rows]="rows" [cols]="cols" [map]="groundMap" 
-      [reachableRooms]="reachableRooms"></app-floor>
+      [players]="groundPlayers()" [reachableRooms]="reachableRooms"></app-floor>
 
       <app-floor *ngIf="activeMap === 'u'" [rows]="rows" [cols]="cols" [map]="upperMap" 
-      [reachableRooms]="reachableRooms"></app-floor>
+      [players]="upperPlayers()" [reachableRooms]="reachableRooms"></app-floor>
     </div>
     <button class="btn-light nav-item rounded" [ngClass]="activeMap === 'b' ? 'active' : ''" (click)="seeBasement()">Basement</button>
     <button class="btn-light nav-item rounded" [ngClass]="activeMap === 'g' ? 'active' : ''" autofocus (click)="seeGround()">Ground</button>

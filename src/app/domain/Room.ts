@@ -8,7 +8,6 @@ export class Room {
   path: string = "";
   floor: Floor;
   card: CardType;
-  players: Player[] = [];
 
   constructor(name: string, floor: Floor, card: CardType, roomType: string, direction: Orientation = Orientation.North) {
     this.name = name;
@@ -95,12 +94,6 @@ export class Room {
         this.direction = 1;
       }
       console.log(evt);
-    }
-  }
-
-  addPlayer(player: Player) {
-    if (!this.players.includes(player)) {
-      this.players.push(player);
     }
   }
 
