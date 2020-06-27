@@ -1,4 +1,4 @@
-import { Pair } from '../domain/Pair';
+import { Point } from '../domain/Point';
 import { Floor } from './EnumTypes';
 
 /*
@@ -8,7 +8,7 @@ import { Floor } from './EnumTypes';
 
 */
 export class Player {
-  location: Pair;
+  location: Point;
   floor: Floor;
   color: string;
   name: string;
@@ -25,7 +25,7 @@ export class Player {
   sanity: number;
   knowledge: number;
 
-  private constructor(name: string, color: string) {
+  private constructor(name: string, color: string) {    
     this.name = name;
     this.color = color;
   }

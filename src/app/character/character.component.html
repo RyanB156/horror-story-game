@@ -1,10 +1,11 @@
 
 <div class="character-box" [ngStyle]="{'border-color':player.color}">
   <div class="row">
-    <div class="col">
+    <div class="col-6">
       <div class="player-name" [ngClass]="active ? 'active' : 'none'">{{ player.name }}</div>
+      <div>Stamina: {{ player.movesRemaining }}</div>
     </div>
-    <div class="col">
+    <div class="col-6">
       <div class="player-floor">{{ player.getFloorName() }}</div>
     </div>
   </div>

@@ -8,6 +8,7 @@ export class Room {
   path: string = "";
   floor: Floor;
   card: CardType;
+  isNewRoom: boolean = false;
 
   constructor(name: string, floor: Floor, card: CardType, roomType: string, direction: Orientation = Orientation.North) {
     this.name = name;
@@ -86,14 +87,14 @@ export class Room {
     }
   }
 
-  rotate(evt) : void {
+  rotate() : void {
     console.log("Rotating room");
     if (this.floor !== Floor.Start) {
       this.direction *= 2;
       if (this.direction > 8) {
         this.direction = 1;
       }
-      console.log(evt);
+      this.setDirection(this.direction);
     }
   }
 

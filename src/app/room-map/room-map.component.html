@@ -1,6 +1,6 @@
 
 <div class="row justify-content-center">
-  <div class="col-sm-12 col-md-6">
+  <div class="col-sm-12">
     <div class="row">
       <app-floor *ngIf="activeMap === 'b'" [rows]="rows" [cols]="cols" [map]="basementMap" 
       [players]="basementPlayers()" [reachableRooms]="reachableRooms"></app-floor>
@@ -15,7 +15,7 @@
     <button class="btn-light nav-item rounded" [ngClass]="activeMap === 'g' ? 'active' : ''" autofocus (click)="seeGround()">Ground</button>
     <button class="btn-light nav-item rounded" [ngClass]="activeMap === 'u' ? 'active' : ''" (click)="seeUpper()">Upper</button>
   </div>
-  <div class="col-lg-12 col-xl-6">
+  <div class="col-lg-12">
     <label for="diceToRoll" class="w-100">How many dice?</label>
     <input id="diceToRoll" type="number" [(ngModel)]="diceToRoll">
     <button class="btn-primary rounded" (click)="roll()">Roll</button>
