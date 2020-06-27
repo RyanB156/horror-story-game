@@ -9,6 +9,7 @@ export class Room {
   floor: Floor;
   card: CardType;
   isNewRoom: boolean = false;
+  hasBeenVisited: boolean = true;
 
   constructor(name: string, floor: Floor, card: CardType, roomType: string, direction: Orientation = Orientation.North) {
     this.name = name;
@@ -105,6 +106,15 @@ export class Room {
       case Orientation.South: return "south";
       case Orientation.West: return "west";
       default: return "none";
+    }
+  }
+
+  getCard() : string {
+    switch (this.card) {
+      case CardType.None: return "";
+      case CardType.Event: return "E";
+      case CardType.Item: return "I";
+      case CardType.Omen: return "O";
     }
   }
 

@@ -38,10 +38,12 @@ export class FloorComponent implements OnInit, AfterViewInit {
   onRoomClick(x: number, y: number) : void {
 
     console.log(`Clicked ${x}, ${y}`);
-
+    console.log(this.map[x][y]);
     if (this.map[x][y] !== undefined && this.map[x][y].isNewRoom) {
+      console.log("Rotating");
       this.map[x][y].rotate();
     } else {
+      console.log("Emitting");
       this.roomClick.emit(new Point(x, y));
     }
   }

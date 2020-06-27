@@ -14,6 +14,7 @@
           <div class="row room-overlay">              
             <div class="floor-label col-4">
               {{ map[i][j].getFloor() }}
+              {{ map[i][j].getCard() }}
             </div>
             <div class="player-token col-4" *ngFor="let player of playersHere(i, j); let p = index" [ngStyle]="{'color':player.color}"><b>X({{ player.movesRemaining }})</b></div>
           </div>

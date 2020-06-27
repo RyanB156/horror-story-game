@@ -2,13 +2,13 @@
 <div class="row justify-content-center">
   <div class="col-sm-12">
     <div class="row">
-      <app-floor *ngIf="activeMap === 'b'" [rows]="rows" [cols]="cols" [map]="basementMap" 
+      <app-floor [ngClass]="showFloor('b')" [rows]="rows" [cols]="cols" [map]="basementMap" 
       [players]="basementPlayers()" [reachableRooms]="reachableRooms"></app-floor>
 
-      <app-floor *ngIf="activeMap === 'g'" [rows]="rows" [cols]="cols" [map]="groundMap" 
+      <app-floor [ngClass]="showFloor('g')" [rows]="rows" [cols]="cols" [map]="groundMap" 
       [players]="groundPlayers()" [reachableRooms]="reachableRooms"></app-floor>
 
-      <app-floor *ngIf="activeMap === 'u'" [rows]="rows" [cols]="cols" [map]="upperMap" 
+      <app-floor [ngClass]="showFloor('u')" [rows]="rows" [cols]="cols" [map]="upperMap" 
       [players]="upperPlayers()" [reachableRooms]="reachableRooms"></app-floor>
     </div>
     <button class="btn-light nav-item rounded" [ngClass]="activeMap === 'b' ? 'active' : ''" (click)="seeBasement()">Basement</button>
