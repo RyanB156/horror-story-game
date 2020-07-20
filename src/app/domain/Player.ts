@@ -18,7 +18,7 @@ export class Player {
   sanityLevels: number[];
   knowledgeLevels: number[];
 
-  movesRemaining: number;
+  stamina: number;
 
   speed: number;
   might: number;
@@ -31,15 +31,17 @@ export class Player {
   }
 
   startMove() : void {
-    this.movesRemaining = this.speedLevels[this.speed];
+    this.stamina = this.speedLevels[this.speed];
   }
 
   move() : void {
-    this.movesRemaining--;
+    if (this.stamina > 0) {
+      this.stamina--;
+    }
   }
 
   hasMovesRemaining() : boolean {
-    return this.movesRemaining > 0;
+    return this.stamina > 0;
   }
 
   getFloorName() : string {
@@ -48,6 +50,22 @@ export class Player {
       case Floor.Ground: return "Ground";
       case Floor.Upper: return "Upper";
       default: return "N/A";
+    }
+  }
+
+  takePhysicalDamage() : void {
+    if (this.speed >= this.might) {
+      this.speed--;
+    } else {
+      this.might--;
+    }
+  }
+
+  takeMentalDamage() : void {
+    if (this.sanity >= this.knowledge) {
+      this.sanity--;
+    } else {
+      this.knowledge--;
     }
   }
 

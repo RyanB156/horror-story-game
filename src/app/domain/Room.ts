@@ -9,7 +9,7 @@ export class Room {
   floor: Floor;
   card: CardType;
   isNewRoom: boolean = false;
-  hasBeenVisited: boolean = true;
+  hasBeenVisited: boolean = false;
 
   constructor(name: string, floor: Floor, card: CardType, roomType: string, direction: Orientation = Orientation.North) {
     this.name = name;
