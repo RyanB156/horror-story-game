@@ -1,5 +1,5 @@
-﻿Title,Dialogue,Description
-A Moment of Hope,Something feels strangely ight about htis room. Something is resisting the evil of the house.,Place the Blessing token in this room. Each hero rolls 1 additional die (maximum of 8 dice) on all trait rolls while in this room.
+﻿k,Dialogue,Description
+A Moment of Hope,Something feels strangely ight about this room. Something is resisting the evil of the house.,Place the Blessing token in this room. Each hero rolls 1 additional die (maximum of 8 dice) on all trait rolls while in this room.
 Spider,A spider the size of a fist lands on your shoulder... and crawls into your hair.,You must attempt a Speed roll to brush it away or a Sanity roll to stand stil: 4+ It's gone. Gain 1 in the trait you used to attempt this roll. 1-3 It bites you. Take 1 die of physical damage. 0 It takes a chunk out of you. Take 2 dice of physical damage.
 Closet Door,That closet door is open... just a crack. There must be something inside.,"Put the Closet token in this room. Once during an explorer's turn, that explorer can roll 2 dice to open the Closet: 4 Draw an item card. 2-3 Draw an event card. 0-1 Draw an event card and remove the Closet token."
 Funeral,You see an open coffin. You're inside it.,"You must attempt a Sanity roll: 4+ You blink, and it's gone. Gain 1 Sanity. 2-3 The vision disturbs you. Lose 1 Sanity. 0-1 You're reallin in that coffin. Lose 1 Sanity and 1 Might as you dig yourself out. If the Graveyard or the Crypt has been found, put your explorer in one of those rooms (you choose which one)."
